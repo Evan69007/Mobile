@@ -9,19 +9,27 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.mobile.databinding.FragmentFirstBinding;
+import com.example.mobile.databinding.DetailSpotBinding;
 
-public class FirstFragment extends Fragment {
+public class detail_spot extends Fragment {
 
-    private FragmentFirstBinding binding;
+    private DetailSpotBinding binding;
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
+        binding = DetailSpotBinding.inflate(inflater, container, false);
+        // Lier les vues
+        //spotImage = findViewById(R.id.spotImage);
+        binding.spotName.setText("Plage de Bondi");
+        // spotLocation = findViewById(R.id.spotLocation);
 
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        // Mettre des valeurs
+        //spotLocation.setText("Sydney, Australie");
+        // spotImage.setImageResource(R.ic_launcher_background);
+
         return binding.getRoot();
 
     }
@@ -29,9 +37,9 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonFirst.setOnClickListener(v ->
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_detail)
+        binding.buttonNext.setOnClickListener(v ->
+                NavHostFragment.findNavController(detail_spot.this)
+                        .navigate(R.id.action_detail_to_SecondFragment)
         );
     }
 
@@ -40,5 +48,4 @@ public class FirstFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }
