@@ -1,11 +1,13 @@
 package com.example.mobile;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -24,6 +26,9 @@ public class detail_spot extends Fragment {
         // Lier les vues
         //spotImage = findViewById(R.id.spotImage);
         binding.spotName.setText("Plage de Bondi");
+        binding.Location.setText("Bondi, Austalie");
+        Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_launcher_background);
+        binding.imageView.setImageDrawable(drawable);
         // spotLocation = findViewById(R.id.spotLocation);
 
         // Mettre des valeurs
@@ -34,14 +39,14 @@ public class detail_spot extends Fragment {
 
     }
 
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        binding.buttonNext.setOnClickListener(v ->
-                NavHostFragment.findNavController(detail_spot.this)
-                        .navigate(R.id.action_detail_to_SecondFragment)
-        );
-    }
+//    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        binding.buttonNext.setOnClickListener(v ->
+//                NavHostFragment.findNavController(detail_spot.this)
+//                        .navigate(R.id.action_detail_to_SecondFragment)
+//        );
+//    }
 
     @Override
     public void onDestroyView() {
