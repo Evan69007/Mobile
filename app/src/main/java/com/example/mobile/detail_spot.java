@@ -24,21 +24,15 @@ public class detail_spot extends Fragment {
     ) {
         binding = DetailSpotBinding.inflate(inflater, container, false);
 
-        binding.spotName.setText("Plage de Bondi");
-        binding.Location.setText("Bondi, Austalie");
-        Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_launcher_background);
-        binding.imageView.setImageDrawable(drawable);
+        Bundle args = getArguments();
+        if (args != null) {
+            binding.spotName.setText(args.getString("name"));
+            binding.Location.setText(args.getString("location"));
+            Drawable drawable = ContextCompat.getDrawable(requireContext(), args.getInt("image"));
+            binding.imageView.setImageDrawable(drawable);
+        }
         return binding.getRoot();
 
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        binding.buttonNext.setOnClickListener(v ->
-                NavHostFragment.findNavController(detail_spot.this)
-                        .navigate(R.id.action_detail_to_list)
-        );
     }
 
     @Override

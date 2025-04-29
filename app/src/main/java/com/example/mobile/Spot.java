@@ -1,22 +1,22 @@
 package com.example.mobile;
 
 public class Spot {
-    protected CharSequence name;
-    protected CharSequence location;
+    protected String name;
+    protected String location;
     protected int image;
 
-    public Spot(CharSequence name, CharSequence location, int image)
+    public Spot(String name, String location, int image)
     {
         this.name = name;
         this.image = image;
         this.location = location;
     }
 
-    public CharSequence getName()
+    public String getName()
     {
         return this.name;
     }
-    public CharSequence getLocation()
+    public String getLocation()
     {
         return this.location;
     }
