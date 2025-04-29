@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/detail_spot">
+    app:startDestination="@id/ListSpot">
 
 
     <fragment
@@ -12,9 +12,20 @@
         android:label="Détail Spot"
         tools:layout="@layout/detail_spot">
 
-<!--        <action-->
-<!--            android:id="@+id/action_detail_to_SecondFragment"-->
-<!--            app:destination="@id/SecondFragment" />-->
+        <action
+            android:id="@+id/action_detail_to_list"
+            app:destination="@id/ListSpot" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ListSpot"
+        android:name="com.example.mobile.ListSpot"
+        android:label="Liste des Spot"
+        tools:layout="@layout/list_spot">
+
+        <action
+            android:id="@+id/action_list_to_detail"
+            app:destination="@id/detail_spot" />
     </fragment>
 
 <!--    <fragment-->
