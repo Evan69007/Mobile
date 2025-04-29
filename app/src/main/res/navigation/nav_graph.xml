@@ -3,26 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/detail_spot">
+
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.mobile.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/detail_spot"
+        android:name="com.example.mobile.detail_spot"
+        android:label="Détail Spot"
+        tools:layout="@layout/detail_spot">
 
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_detail_to_SecondFragment"-->
+<!--            app:destination="@id/SecondFragment" />-->
     </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.mobile.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/FirstFragment"-->
+<!--        android:name="com.example.mobile.FirstFragment"-->
+<!--        android:label="@string/first_fragment_label"-->
+<!--        tools:layout="@layout/fragment_first">-->
+
+<!--        <action-->
+<!--            android:id="@+id/action_FirstFragment_to_detail"-->
+<!--            app:destination="@id/detail_spot" />-->
+<!--    </fragment>-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/SecondFragment"-->
+<!--        android:name="com.example.mobile.SecondFragment"-->
+<!--        android:label="@string/second_fragment_label"-->
+<!--        tools:layout="@layout/fragment_second">-->
+
+<!--        <action-->
+<!--            android:id="@+id/action_SecondFragment_to_FirstFragment"-->
+<!--            app:destination="@id/FirstFragment" />-->
+<!--    </fragment>-->
 </navigation>
