@@ -13,6 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobile.databinding.ListSpotBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +36,41 @@ public class ListSpot extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         List<Spot> spots = new ArrayList<>();
-        spots.add(new Spot("Plage des Dames", "Noirmoutier, France", R.drawable.ic_launcher_foreground));
-        spots.add(new Spot("Dune du Pilat", "Arcachon, France", R.drawable.ic_launcher_foreground));
+        try {
+            JSONObject data = new JSONObject(loadJSONFromAsset());
+            JSONArray records = data.getJSONArray("records");
+
+            for (int i = 0; i < records.length(); i++) {
+                JSONObject obj = records.getJSONObject(i);
+                String name = obj.getString("Surf Break");
+                String location = obj.getString("Address");
+                String image = obj.getString("Photos");
+
+                spots.add(new Spot(name, location, R.drawable.ic_launcher_foreground));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         SpotAdapter adapter = new SpotAdapter(spots);
         recyclerView.setAdapter(adapter);
         return binding.getRoot();
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getActivity().getAssets().open("data.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
     @Override
