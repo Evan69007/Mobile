@@ -1,13 +1,11 @@
 package com.example.mobile;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,15 +36,6 @@ public class ListSpot extends Fragment {
         SpotAdapter adapter = new SpotAdapter(spots);
         recyclerView.setAdapter(adapter);
         return binding.getRoot();
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        binding.button.setOnClickListener(v ->
-                NavHostFragment.findNavController(ListSpot.this)
-                        .navigate(R.id.action_list_to_detail)
-        );
     }
 
     @Override

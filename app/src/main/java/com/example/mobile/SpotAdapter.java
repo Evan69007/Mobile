@@ -1,52 +1,74 @@
 package com.example.mobile;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mobile.Spot;
 
 import java.util.List;
 
 public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder> {
-    private final List<Spot> spotList;
+
+    private List<Spot> spotList;
+    private OnImageClickListener imageClickListener;
+
+    public interface OnImageClickListener {
+        void onImageClick(Spot spot);
+    }
 
     public SpotAdapter(List<Spot> spotList) {
         this.spotList = spotList;
+//        this.imageClickListener = listener;
     }
 
-    public static class SpotViewHolder extends RecyclerView.ViewHolder {
-        ImageView spotImage;
-        TextView spotName;
-        TextView spotLocation;
-
-        public SpotViewHolder(View itemView) {
-            super(itemView);
-            spotImage = itemView.findViewById(R.id.imageView);
-            spotName = itemView.findViewById(R.id.spotName);
-            spotLocation = itemView.findViewById(R.id.Location);
-        }
-    }
-
+    @NonNull
     @Override
-    public SpotViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.detail_spot, parent, false);
+    public SpotViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_spot, parent, false);
         return new SpotViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(SpotViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SpotViewHolder holder, int position) {
         Spot spot = spotList.get(position);
         holder.spotName.setText(spot.getName());
         holder.spotLocation.setText(spot.getLocation());
-        holder.spotImage.setImageResource(spot.getImage());
+        holder.spotImage.setImageResource(spot.getImage()); // ou avec Glide/Picasso
+
+        holder.spotImage.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("name", spot.getName());
+            bundle.putString("location", spot.getLocation());
+            bundle.putInt("image", spot.getImage());
+
+            NavController navController = Navigation.findNavController(v);
+            navController.navigate(R.id.detail_spot, bundle);
+        });
     }
 
     @Override
     public int getItemCount() {
         return spotList.size();
+    }
+
+    public static class SpotViewHolder extends RecyclerView.ViewHolder {
+        ImageView spotImage;
+        TextView spotName, spotLocation;
+
+        public SpotViewHolder(@NonNull View itemView) {
+            super(itemView);
+            spotImage = itemView.findViewById(R.id.imageView);
+            spotName = itemView.findViewById(R.id.spotName);
+            spotLocation = itemView.findViewById(R.id.Location);
+        }
     }
 }

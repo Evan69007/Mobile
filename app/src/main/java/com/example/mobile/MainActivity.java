@@ -2,6 +2,7 @@ package com.example.mobile;
 
 import android.os.Bundle;
 
+import com.example.mobile.databinding.ContentMainBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,10 +33,16 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
+        binding.homeButton.setOnClickListener(v ->
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                        .navigate(R.id.ListSpot)
+        );
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
