@@ -42,9 +42,17 @@ public class ListSpot extends Fragment {
 
             for (int i = 0; i < records.length(); i++) {
                 JSONObject obj = records.getJSONObject(i);
-                String name = obj.getString("Surf Break");
-                String location = obj.getString("Address");
-                String image = obj.getString("Photos");
+                JSONObject field = obj.getJSONObject("fields");
+                String location = field.getString("Destination State/Country");
+                String[] Address = field.getString("Address").split(", ");
+                String name = Address[0];
+                JSONArray photos = field.getJSONArray("Photos");
+                String image = null;
+                if (photos.length() > 0) {
+                    JSONObject photo = photos.getJSONObject(0);
+                    image = photo.getString("url");
+                }
+
 
                 spots.add(new Spot(name, location, image));
             }
