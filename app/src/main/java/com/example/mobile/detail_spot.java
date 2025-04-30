@@ -32,7 +32,7 @@ public class detail_spot extends Fragment {
             Picasso.get()
                     .load(args.getString("image"))
                     .into(binding.imageView);
-        }
+    }
         return binding.getRoot();
 
     }
