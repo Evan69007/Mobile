@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,15 +21,8 @@ import java.util.List;
 public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder> {
 
     private List<Spot> spotList;
-    private OnImageClickListener imageClickListener;
-
-    public interface OnImageClickListener {
-        void onImageClick(Spot spot);
-    }
-
     public SpotAdapter(List<Spot> spotList) {
         this.spotList = spotList;
-//        this.imageClickListener = listener;
     }
 
     @NonNull
@@ -42,13 +37,15 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
         Spot spot = spotList.get(position);
         holder.spotName.setText(spot.getName());
         holder.spotLocation.setText(spot.getLocation());
-        holder.spotImage.setImageResource(spot.getImage()); // ou avec Glide/Picasso
+        Picasso.get()
+                .load(spot.getImage())
+                .into(holder.spotImage);
 
         holder.spotImage.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putString("name", spot.getName());
             bundle.putString("location", spot.getLocation());
-            bundle.putInt("image", spot.getImage());
+            bundle.putString("image", spot.getImage());
 
             NavController navController = Navigation.findNavController(v);
             navController.navigate(R.id.detail_spot, bundle);

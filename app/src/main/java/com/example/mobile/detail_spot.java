@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.mobile.databinding.DetailSpotBinding;
+import com.squareup.picasso.Picasso;
 
 public class detail_spot extends Fragment {
 
@@ -28,8 +29,9 @@ public class detail_spot extends Fragment {
         if (args != null) {
             binding.spotName.setText(args.getString("name"));
             binding.Location.setText(args.getString("location"));
-            Drawable drawable = ContextCompat.getDrawable(requireContext(), args.getInt("image"));
-            binding.imageView.setImageDrawable(drawable);
+            Picasso.get()
+                    .load(args.getString("image"))
+                    .into(binding.imageView);
         }
         return binding.getRoot();
 
