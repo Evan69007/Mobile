@@ -52,8 +52,6 @@ public class ListSpot extends Fragment {
                     JSONObject photo = photos.getJSONObject(0);
                     image = photo.getString("url");
                 }
-
-
                 spots.add(new Spot(name, location, image));
             }
         } catch (JSONException e) {

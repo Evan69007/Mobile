@@ -30,6 +30,11 @@
           <theme>@style/Theme.Mobile</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/main_page.xml">
+        <config>
+          <theme>@style/Theme.Mobile</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/navigation/nav_graph.xml">
         <config>
           <theme>@style/Theme.Mobile</theme>
@@ -48,11 +53,11 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/navEditor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/data.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mobile/ListSpot.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mobile/ListSpot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mobile/detail_spot.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mobile/detail_spot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,11 +67,19 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\evana\.android\avd\Pixel_9_Pro.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=97fdc935)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="layoutResourceFile" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -111,11 +124,22 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "JSON__Compliqué",
-    "kotlin-language-version-configured": "true"
+    "git-widget-placeholder": "MainPage",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/ADA/Ada_Tech_School/Projets/Projet_mobile/app/src/main/res/mipmap-xxhdpi"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\ADA\Ada_Tech_School\Projets\Projet_mobile\app\src\main\res\mipmap-xxhdpi" />
+      <recent name="C:\ADA\Ada_Tech_School\Projets\Projet_mobile\app\src\main\res\mipmap-xxxhdpi" />
+      <recent name="C:\ADA\Ada_Tech_School\Projets\Projet_mobile\app\src\main\res\mipmap-xhdpi" />
+      <recent name="C:\ADA\Ada_Tech_School\Projets\Projet_mobile\app\src\main\res\mipmap-mdpi" />
+      <recent name="C:\ADA\Ada_Tech_School\Projets\Projet_mobile\app\src\main\res\mipmap-hdpi" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\ADA\Ada_Tech_School\Projets\Projet_mobile\app\src\main\res\drawable" />
+    </key>
     <key name="android.template.-234031274">
       <recent name="com.example.mobile" />
     </key>
@@ -233,12 +257,12 @@
       <map>
         <entry key="com.example.mobile">
           <value>
-            <CheckInfo lastCheckTimestamp="1745928101964" />
+            <CheckInfo lastCheckTimestamp="1746017894379" />
           </value>
         </entry>
         <entry key="com.example.mobile.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1745928101967" />
+            <CheckInfo lastCheckTimestamp="1746017894378" />
           </value>
         </entry>
       </map>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/ListSpot">
+    app:startDestination="@id/main_page">
 
 
     <fragment
@@ -15,6 +15,15 @@
         <action
             android:id="@+id/action_detail_to_list"
             app:destination="@id/ListSpot" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/main_page"
+        android:name="com.example.mobile.main_page"
+        android:label="Main page"
+        tools:layout="@layout/main_page">
+
+
     </fragment>
 
     <fragment
