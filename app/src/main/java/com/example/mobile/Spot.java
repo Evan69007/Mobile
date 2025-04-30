@@ -3,9 +3,9 @@ package com.example.mobile;
 public class Spot {
     protected String name;
     protected String location;
-    protected int image;
+    protected String image;
 
-    public Spot(String name, String location, int image)
+    public Spot(String name, String location, String image)
     {
         this.name = name;
         this.image = image;
@@ -20,7 +20,7 @@ public class Spot {
     {
         return this.location;
     }
-    public int getImage()
+    public String getImage()
     {
         return this.image;
     }

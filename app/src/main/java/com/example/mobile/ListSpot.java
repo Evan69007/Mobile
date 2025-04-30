@@ -46,7 +46,7 @@ public class ListSpot extends Fragment {
                 String location = obj.getString("Address");
                 String image = obj.getString("Photos");
 
-                spots.add(new Spot(name, location, R.drawable.ic_launcher_foreground));
+                spots.add(new Spot(name, location, image));
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
