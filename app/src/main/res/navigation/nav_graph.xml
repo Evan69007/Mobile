@@ -5,16 +5,11 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/main_page">
 
-
     <fragment
         android:id="@+id/detail_spot"
         android:name="com.example.mobile.detail_spot"
         android:label="Spot Detail"
         tools:layout="@layout/detail_spot">
-
-        <action
-            android:id="@+id/action_detail_to_list"
-            app:destination="@id/ListSpot" />
     </fragment>
 
     <fragment
@@ -22,8 +17,6 @@
         android:name="com.example.mobile.main_page"
         android:label="Main page"
         tools:layout="@layout/main_page">
-
-
     </fragment>
 
     <fragment
@@ -31,31 +24,5 @@
         android:name="com.example.mobile.ListSpot"
         android:label="Spots List"
         tools:layout="@layout/list_spot">
-
-        <action
-            android:id="@+id/action_list_to_detail"
-            app:destination="@id/detail_spot" />
     </fragment>
-
-<!--    <fragment-->
-<!--        android:id="@+id/FirstFragment"-->
-<!--        android:name="com.example.mobile.FirstFragment"-->
-<!--        android:label="@string/first_fragment_label"-->
-<!--        tools:layout="@layout/fragment_first">-->
-
-<!--        <action-->
-<!--            android:id="@+id/action_FirstFragment_to_detail"-->
-<!--            app:destination="@id/detail_spot" />-->
-<!--    </fragment>-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/SecondFragment"-->
-<!--        android:name="com.example.mobile.SecondFragment"-->
-<!--        android:label="@string/second_fragment_label"-->
-<!--        tools:layout="@layout/fragment_second">-->
-
-<!--        <action-->
-<!--            android:id="@+id/action_SecondFragment_to_FirstFragment"-->
-<!--            app:destination="@id/FirstFragment" />-->
-<!--    </fragment>-->
 </navigation>

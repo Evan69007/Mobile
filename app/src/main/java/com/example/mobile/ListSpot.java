@@ -1,6 +1,7 @@
 package com.example.mobile;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ListSpot extends Fragment {
     private ListSpotBinding binding;
+    private SpotAdapter adapter;
+    private final List<Spot> spots = new ArrayList<>();
 
     @Override
     public View onCreateView(
@@ -35,48 +42,39 @@ public class ListSpot extends Fragment {
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        List<Spot> spots = new ArrayList<>();
-        try {
-            JSONObject data = new JSONObject(loadJSONFromAsset());
-            JSONArray records = data.getJSONArray("records");
-
-            for (int i = 0; i < records.length(); i++) {
-                JSONObject obj = records.getJSONObject(i);
-                JSONObject field = obj.getJSONObject("fields");
-                String location = field.getString("Destination State/Country");
-                String[] Address = field.getString("Address").split(", ");
-                String name = Address[0];
-                JSONArray photos = field.getJSONArray("Photos");
-                String image = null;
-                if (photos.length() > 0) {
-                    JSONObject photo = photos.getJSONObject(0);
-                    image = photo.getString("url");
-                }
-                spots.add(new Spot(name, location, image));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        SpotAdapter adapter = new SpotAdapter(spots);
+        // Initialize adapter with empty list
+        adapter = new SpotAdapter(spots);
         recyclerView.setAdapter(adapter);
-        return binding.getRoot();
-    }
 
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = getActivity().getAssets().open("data.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
+        // Fetch data
+        SurfSpotRepository repository = new SurfSpotRepository();
+        repository.fetchSurfSpots(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Record> records = response.body().records;
+                    for (Record obj : records) {
+                        Fields field = obj.fields;
+                        String location = field.DestinationStateCountry;
+                        String name = field.Destination;
+                        String image = (field.Photos != null && !field.Photos.isEmpty())
+                                ? field.Photos.get(0).url
+                                : null;
+                        spots.add(new Spot(name, location, image));
+                        adapter.notifyItemChanged(0); // ✅ Notify adapter here
+                    }
+                } else {
+                    Log.e("API", "Response failed: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e("API", "Error: " + t.getMessage());
+            }
+        });
+
+        return binding.getRoot();
     }
 
     @Override
@@ -85,3 +83,4 @@ public class ListSpot extends Fragment {
         binding = null;
     }
 }
+
