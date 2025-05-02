@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/detail_spot"
         android:name="com.example.mobile.detail_spot"
-        android:label="Détail Spot"
+        android:label="Spot Detail"
         tools:layout="@layout/detail_spot">
 
         <action
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/ListSpot"
         android:name="com.example.mobile.ListSpot"
-        android:label="Liste des Spot"
+        android:label="Spots List"
         tools:layout="@layout/list_spot">
 
         <action
