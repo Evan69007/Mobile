@@ -5,13 +5,11 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/main_page">
 
-
     <fragment
         android:id="@+id/detail_spot"
         android:name="com.example.mobile.detail_spot"
         android:label="Spot Detail"
         tools:layout="@layout/detail_spot">
-
     </fragment>
 
     <fragment
@@ -19,8 +17,6 @@
         android:name="com.example.mobile.main_page"
         android:label="Main page"
         tools:layout="@layout/main_page">
-
-
     </fragment>
 
     <fragment
@@ -28,7 +24,5 @@
         android:name="com.example.mobile.ListSpot"
         android:label="Spots List"
         tools:layout="@layout/list_spot">
-
-
     </fragment>
 </navigation>
