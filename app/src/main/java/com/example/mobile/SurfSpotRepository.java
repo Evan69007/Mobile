@@ -1,7 +1,10 @@
 package com.example.mobile;
 
+import org.json.JSONObject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -16,6 +19,7 @@ public class SurfSpotRepository {
                 .addInterceptor(chain -> {
                     Request request = chain.request().newBuilder()
                             .addHeader("Authorization", "Bearer patLinxDfQmD3pA8h.031e67116f7078e1000628fe693c735cba92524421ae7f12749e28f97e751ce2")
+                            .addHeader("Content-Type", "application/json")
                             .build();
                     return chain.proceed(request);
                 })
@@ -32,6 +36,11 @@ public class SurfSpotRepository {
 
     public void fetchSurfSpots(Callback<ApiResponse> callback) {
         Call<ApiResponse> call = apiService.getSurfSpots();
+        call.enqueue(callback);
+    }
+
+    public void AddSurfSpot(Callback<ApiResponse> callback, RequestBody body){
+        Call<ApiResponse> call = apiService.AddSurfSpots(body);
         call.enqueue(callback);
     }
 }
