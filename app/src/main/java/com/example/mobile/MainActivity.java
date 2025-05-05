@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
                         .navigate(R.id.ListSpot)
         );
 
+        binding.AddSpot.setOnClickListener(v ->
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                        .navigate(R.id.AddSpot)
+        );
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

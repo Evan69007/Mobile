@@ -25,4 +25,11 @@
         android:label="Spots List"
         tools:layout="@layout/list_spot">
     </fragment>
+
+    <fragment
+        android:id="@+id/AddSpot"
+        android:name="com.example.mobile.AddSpot"
+        android:label="Add Spot"
+        tools:layout="@layout/add_spot">
+    </fragment>
 </navigation>

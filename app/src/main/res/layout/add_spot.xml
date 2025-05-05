@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/AddSpot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible"
+    tools:context=".AddSpot"
+    tools:visibility="visible">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/Surf_break"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="33dp"
+        android:hint="Surf Break"
+        android:inputType="text"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Destination_State_Country"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/difficulty"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="27dp"
+        android:hint="Difficulty Level"
+        android:inputType="number"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Surf_break"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/peak_begin"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="31dp"
+        android:hint="Peak Surf Season Begins"
+        android:inputType="datetime|date"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/difficulty"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/peak_end"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:hint="Peak Surf Season Ends"
+        android:inputType="datetime|date"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/peak_begin"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/url"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:hint="Photo url"
+        android:inputType="text|textUri"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/peak_end"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/Destination"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="62dp"
+        android:layout_marginBottom="36dp"
+        android:hint="Destination"
+        android:inputType="text"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/Destination_State_Country"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/Destination_State_Country"
+        android:layout_width="279dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="36dp"
+        android:hint="Destination State/Country"
+        android:inputType="text"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Destination"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/url" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
