@@ -3,37 +3,129 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#199FDC">
 
-    <TextView
-        android:id="@+id/spotName"
-        android:layout_width="142dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="72dp"
-        app:layout_constraintEnd_toStartOf="@+id/Location"
+    <ImageView
+        android:id="@+id/myImageView"
+        android:layout_width="63dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="40dp"
+        android:contentDescription="My image"
+        android:gravity="center"
+        android:src="@drawable/map"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/mylevel"
+        android:layout_width="63dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="55dp"
+        android:contentDescription="My level"
+        android:gravity="center"
+        android:src="@drawable/level"
+        app:layout_constraintEnd_toStartOf="@+id/mysurf"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/myImageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/mysurf"
+        android:layout_width="63dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="50dp"
+        android:contentDescription="My Surf"
+        android:gravity="center"
+        android:src="@drawable/surfing"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/Location"
-        android:layout_width="145dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="72dp"
+        android:layout_width="130dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="50dp"
+
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="245dp"
+        android:gravity="left"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myImageView"
+        app:layout_constraintVertical_bias="0.064" />
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="53dp"
+        android:layout_height="33dp"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="185dp"
+        android:gravity="left"
+        android:text="5"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spotName"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/mylevel" />
+
+    <TextView
+        android:id="@+id/peak"
+        android:layout_width="116dp"
+        android:layout_height="150dp"
+
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="13dp"
+        android:gravity="left"
+        android:text="July 22 to August 31"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mysurf" />
+
+    <TextView
+        android:id="@+id/spotName"
+        android:layout_width="294dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="10dp"
+        android:capitalize="none"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.142" />
 
     <ImageView
         android:id="@+id/imageView"
+        android:layout_width="336dp"
+        android:layout_height="235dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="120dp"
         android:clickable="true"
-        android:layout_width="279dp"
-        android:layout_height="212dp"
-        android:layout_marginTop="32dp"
         android:focusable="true"
-        app:layout_constraintBottom_toTopOf="@+id/spotName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.415"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
