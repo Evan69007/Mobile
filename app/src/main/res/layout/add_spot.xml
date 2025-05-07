@@ -48,7 +48,8 @@
             app:layout_constraintBottom_toTopOf="@+id/Surf_break"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Destination_State_Country" />
+            app:layout_constraintTop_toBottomOf="@+id/Destination_State_Country"
+            />
 
         <TextView
             android:id="@+id/textView4"
