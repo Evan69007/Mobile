@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#199FDC">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/myImageView"
@@ -66,13 +65,14 @@
         android:layout_width="53dp"
         android:layout_height="33dp"
 
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="185dp"
         android:gravity="left"
-        android:text="5"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Location"
         app:layout_constraintTop_toBottomOf="@+id/mylevel" />
 
     <TextView
@@ -80,13 +80,14 @@
         android:layout_width="116dp"
         android:layout_height="150dp"
 
+        android:layout_marginStart="80dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="13dp"
         android:gravity="left"
-        android:text="July 22 to August 31"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/level"
         app:layout_constraintTop_toBottomOf="@+id/mysurf" />
 
     <TextView

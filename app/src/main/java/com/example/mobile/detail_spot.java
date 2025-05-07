@@ -1,6 +1,7 @@
 package com.example.mobile;
 
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.mobile.databinding.DetailSpotBinding;
 import com.squareup.picasso.Picasso;
+
+import java.time.format.DateTimeFormatter;
 
 public class detail_spot extends Fragment {
 
@@ -29,12 +32,20 @@ public class detail_spot extends Fragment {
         if (args != null) {
             binding.spotName.setText(args.getString("name"));
             binding.Location.setText(args.getString("location"));
+            int difficulty = args.getInt("Difficulty Level");
+            binding.level.setText(Integer.toString(difficulty));
+            String peak_end = args.getString("Peak Surf Season Ends");
+            String peak_start = args.getString("Peak Surf Season Begins");
+
+            String peakStartFormatted = DateFormatter.reformatDate(peak_start);
+            String peakEndFormatted = DateFormatter.reformatDate(peak_end);
+            String fullPeak = peakStartFormatted + " to " + peakEndFormatted;
+            binding.peak.setText(fullPeak);
             Picasso.get()
                     .load(args.getString("image"))
                     .into(binding.imageView);
     }
         return binding.getRoot();
-
     }
 
     @Override

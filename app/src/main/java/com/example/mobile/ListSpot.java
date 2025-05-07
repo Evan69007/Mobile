@@ -57,10 +57,13 @@ public class ListSpot extends Fragment {
                         Fields field = obj.fields;
                         String location = field.DestinationStateCountry;
                         String name = field.Destination;
+                        int difficulty = field.DifficultyLevel;
+                        String peak_end = field.PeakSurfSeasonEnds;
+                        String peak_start = field.PeakSurfSeasonBegins;
                         String image = (field.Photos != null && !field.Photos.isEmpty())
                                 ? field.Photos.get(0).url
                                 : null;
-                        spots.add(new Spot(name, location, image));
+                        spots.add(new Spot(name, location, image, difficulty, peak_end, peak_start));
                         adapter.notifyItemChanged(0); // ✅ Notify adapter here
                     }
                 } else {
