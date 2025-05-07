@@ -32,4 +32,11 @@
         android:label="Add Spot"
         tools:layout="@layout/add_spot">
     </fragment>
+
+    <fragment
+        android:id="@+id/About"
+        android:name="com.example.mobile.About"
+        android:label="About The App"
+        tools:layout="@layout/about">
+    </fragment>
 </navigation>

@@ -18,6 +18,7 @@ import com.example.mobile.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,13 +39,32 @@ public class MainActivity extends AppCompatActivity {
                         .navigate(R.id.ListSpot)
         );
 
-        binding.AddSpot.setOnClickListener(v ->
+        binding.plusButton.setOnClickListener(v ->
                 Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
                         .navigate(R.id.AddSpot)
         );
+
+        binding.Shaka.setOnClickListener(v ->
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                        .navigate(R.id.About)
+        );
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        LinearLayout bottomNavBar = findViewById(R.id.bottomNavBar);
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            int destId = destination.getId();
+
+            // Replace R.id.hiddenFragment with the ID of the fragment where you want to hide the nav bar
+            if (destId == R.id.main_page) {
+                bottomNavBar.setVisibility(View.GONE);
+            } else {
+                bottomNavBar.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 

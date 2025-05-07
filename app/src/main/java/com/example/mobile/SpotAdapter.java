@@ -28,7 +28,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
     @NonNull
     @Override
     public SpotViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_spot, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.spot_layout, parent, false);
         return new SpotViewHolder(view);
     }
 
@@ -36,7 +36,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
     public void onBindViewHolder(@NonNull SpotViewHolder holder, int position) {
         Spot spot = spotList.get(position);
         holder.spotName.setText(spot.getName());
-        holder.spotLocation.setText(spot.getLocation());
+//        holder.spotLocation.setText(spot.getLocation());
         Picasso.get()
                 .load(spot.getImage())
                 .into(holder.spotImage);
@@ -46,6 +46,9 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
             bundle.putString("name", spot.getName());
             bundle.putString("location", spot.getLocation());
             bundle.putString("image", spot.getImage());
+            bundle.putString("Peak Surf Season Ends", spot.getPeakEnd());
+            bundle.putString("Peak Surf Season Begins", spot.getPeakStart());
+            bundle.putInt("Difficulty Level", spot.getDifficulty());
 
             NavController navController = Navigation.findNavController(v);
             navController.navigate(R.id.detail_spot, bundle);
@@ -59,13 +62,14 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
 
     public static class SpotViewHolder extends RecyclerView.ViewHolder {
         ImageView spotImage;
-        TextView spotName, spotLocation;
+        TextView spotName;
+//        TextView spotLocation;
 
         public SpotViewHolder(@NonNull View itemView) {
             super(itemView);
             spotImage = itemView.findViewById(R.id.imageView);
             spotName = itemView.findViewById(R.id.spotName);
-            spotLocation = itemView.findViewById(R.id.Location);
+//            spotLocation = itemView.findViewById(R.id.Location);
         }
     }
 }
