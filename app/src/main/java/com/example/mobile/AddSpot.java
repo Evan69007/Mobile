@@ -41,8 +41,6 @@ public class AddSpot extends Fragment {
             Bundle savedInstanceState
     ) {
         binding = AddSpotBinding.inflate(inflater, container, false);
-
-
         binding.Submit.setOnClickListener(v -> {
             try {
                 JSONObject data = new JSONObject();
@@ -54,16 +52,8 @@ public class AddSpot extends Fragment {
                 fields.put("Peak Surf Season Ends", binding.peakEnd.getText().toString());
                 int difficulty = Integer.parseInt(binding.difficulty.getText().toString());
                 fields.put("Difficulty Level", difficulty);
-                fields.put("Geocode", "Geocode"); // Tu peux remplacer par une vraie géolocalisation
-
-                fields.put("Magic Seaweed Link", "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/");
-
-                String[] surfBreak = binding.SurfBreak.getText().toString().split(",");
+                String[] surfBreak = binding.SurfBreak.getText().toString().split(", ");
                 fields.put("Surf Break", new JSONArray(surfBreak));
-
-                String[] influencers = {"recD1zp1pQYc8O7l2", "rec1ptbRPxhS8rRun"};
-                fields.put("Influencers", new JSONArray(influencers));
-
                 JSONArray photos = new JSONArray();
                 JSONObject photo = new JSONObject();
                 photo.put("url", binding.url.getText().toString());
@@ -104,6 +94,4 @@ public class AddSpot extends Fragment {
 
         return binding.getRoot();
     }
-
-
 }
