@@ -36,88 +36,97 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="242dp"
-            android:layout_height="27dp"
+            android:layout_width="97dp"
+            android:layout_height="23dp"
             android:layout_marginStart="65dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="104dp"
+            android:gravity="left"
             android:text="Surf Break:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#FFFFFFFF"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/Surf_break"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Destination_State_Country"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/Destination_State_Country" />
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="295dp"
-            android:layout_height="24dp"
+            android:layout_width="85dp"
+            android:layout_height="22dp"
             android:layout_marginStart="65dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="51dp"
+            android:gravity="left"
             android:text="Difficulty:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#FFFFFFFF"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/difficulty"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.005"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Surf_break" />
 
         <TextView
 
             android:id="@+id/textView5"
-            android:layout_width="300dp"
-            android:layout_height="22dp"
+            android:layout_width="151dp"
+            android:layout_height="24dp"
             android:layout_marginStart="65dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="46dp"
+            android:gravity="left"
             android:text="Peak season start:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#FFFFFFFF"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/peak_begin"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/difficulty" />
+
 
         <TextView
 
 
             android:id="@+id/textView6"
-            android:layout_width="300dp"
+            android:layout_width="150dp"
             android:layout_height="22dp"
             android:layout_marginStart="66dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="45dp"
+            android:gravity="left"
             android:text="Peak season end:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#FFFFFFFF"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/peak_end"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/peak_begin" />
-
 
         <TextView
 
 
             android:id="@+id/textView7"
-            android:layout_width="300dp"
-            android:layout_height="22dp"
+            android:layout_width="62dp"
+            android:layout_height="21dp"
             android:layout_marginStart="65dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="46dp"
+            android:gravity="left"
             android:text="Photo:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#FFFFFFFF"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/url"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/peak_end" />
 
