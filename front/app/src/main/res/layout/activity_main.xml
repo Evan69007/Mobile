@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_main" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/bottomNavBar"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <!-- Tu peux ajouter tes icônes ici -->
+
+            <!-- Bouton Plus -->
+            <ImageButton
+                android:id="@+id/Shaka"
+                android:layout_width="1dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="Shaka"
+                android:src="@drawable/shaka" />
+
+            <ImageButton
+                android:id="@+id/homeButton"
+                android:layout_width="1dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="Accueil"
+                android:src="@drawable/homebutton" />
+
+            <ImageButton
+                android:id="@+id/plusButton"
+                android:layout_width="1dp"
+                android:layout_height="80dp"
+
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="Ajouter"
+                android:src="@drawable/plus" />
+
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

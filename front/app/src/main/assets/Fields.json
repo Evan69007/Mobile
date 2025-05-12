@@ -1,0 +1,17 @@
+{
+  "fields": {
+    "Surf Break": [
+      "Reef Break"
+    ],
+    "Difficulty Level": 4,
+    "Destination": "Pipeline",
+    "Photos": [
+      {
+        "url": "https://v5.airtableusercontent.com/v3/u/40/40/1746784800000/eX9I5IrPkvdZstDmlzbWtA/SYYqhUECmrhI2A7AW027QKK8uQjOuoevj70ppwfBLCIQBuLq5P2CGdrsczs69HrpY1BD9GmJxMAyyxNy-QLfj7lCyoM8hSUZAgBRXUJ_aZwY4Z5r3GvW60KZU7HtB21vtunbHZljheazTslVQejy7Q/Eh-4MblaICpzNP0QAf14BW-GZi2EDwpQFByYxPX0NIs"
+      }
+    ],
+    "Peak Surf Season Begins": "2018-07-22",
+    "Destination State/Country": "Oahu, Hawaii",
+    "Peak Surf Season Ends": "2018-08-31"
+  }
+}
