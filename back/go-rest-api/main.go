@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -11,11 +10,11 @@ import (
 )
 
 // Define the event structure
-type event struct {
-	ID          string `json:"ID"`
-	Title       string `json:"Title"`
-	Description string `json:"Description"`
-}
+// type event struct {
+// 	ID          string `json:"ID"`
+// 	Title       string `json:"Title"`
+// 	Description string `json:"Description"`
+// }
 type records struct {
 	Records []surfSpot `json:"records"`
 	Offset string `json:"offset"`
@@ -35,11 +34,25 @@ type fields struct {
 	Photos []photo `json:"Photos"`
 	PeakSurfSeasonBegins string `json:"Peak Surf Season Begins"`
 	PeakSurfSeasonEnds string `json:"Peak Surf Season Ends"`
-	Adress string `json:"Address"`
+	Address string `json:"Address"`
 	DestinationStateCountry string `json:"Destination State/Country"` // DestinationStateCountry
 
 
 }
+
+type SurfSpotSummary struct {
+    SurfBreak []string `json:"Surf Break"`
+    Photos    []photo  `json:"Photos"`
+    Address   string   `json:"Address"`
+}
+
+type Onespot struct {
+	DifficultyLevel int `json:"Difficulty Level"`
+	PeakSurfSeasonBegins string `json:"Peak Surf Season Begins"`
+	PeakSurfSeasonEnds string `json:"Peak Surf Season Ends"`
+	DestinationStateCountry string `json:"Destination State/Country"`
+}
+
 
 type photo struct {
 	ID string `json:"id"`
@@ -61,8 +74,6 @@ type thumbnaildata struct {
 }
 
 
-
-type allEvents []event
 type allSurfSpots records
 type allPhotos []photo
 type allThumbnail thumbnail
@@ -70,13 +81,13 @@ type allThumbnaildata thumbnaildata
 type allFields []fields
 
 
-var events = allEvents{
-	{
-		ID:          "1",
-		Title:       "Introduction to Golang",
-		Description: "Come join us for a chance to learn how golang works and get to eventually try it out",
-	},
-}
+// var events = allEvents{
+// 	{
+// 		ID:          "1",
+// 		Title:       "Introduction to Golang",
+// 		Description: "Come join us for a chance to learn how golang works and get to eventually try it out",
+// 	},
+// }
 
 var surfSpots = allSurfSpots{
 	Records: []surfSpot{
@@ -117,7 +128,7 @@ var surfSpots = allSurfSpots{
 				},
 				PeakSurfSeasonBegins:     "2018-07-22",
 				PeakSurfSeasonEnds:       "2018-08-31",
-				Adress:                   "Pipeline, Oahu, Hawaii",
+				Address:                   "Pipeline, Oahu, Hawaii",
 				DestinationStateCountry:  "Oahu, Hawaii",
 			},
 			CreatedTime: "2018-05-31T00:16:16.000Z",
@@ -132,31 +143,57 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "Welcome home!"})
 }
 
-func createEvent(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+// func createEvent(w http.ResponseWriter, r *http.Request) {
+// 		w.Header().Set("Content-Type", "application/json")
 
-	var newEvent event
-	reqBody, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		fmt.Fprintf(w, "Please provide event title and description")
-		return
-	}
+// 	var newEvent event
+// 	reqBody, err := ioutil.ReadAll(r.Body)
+// 	if err != nil {
+// 		fmt.Fprintf(w, "Please provide event title and description")
+// 		return
+// 	}
 
-	json.Unmarshal(reqBody, &newEvent)
-	events = append(events, newEvent)
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(newEvent)
-}
+// 	json.Unmarshal(reqBody, &newEvent)
+// 	events = append(events, newEvent)
+// 	w.WriteHeader(http.StatusCreated)
+// 	json.NewEncoder(w).Encode(newEvent)
+// }
 
-func getAllEvents(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+// func getAllEvents(w http.ResponseWriter, r *http.Request) {
+// 		w.Header().Set("Content-Type", "application/json")
 
-	json.NewEncoder(w).Encode(events)
-}
+// 	json.NewEncoder(w).Encode(events)
+// }
 
 func getAllSurfSpots(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(surfSpots)
+	    var summarySpots []SurfSpotSummary
+	for _, spot := range surfSpots.Records {
+		summarySpots = append(summarySpots, SurfSpotSummary{
+			SurfBreak: spot.Fields.SurfBreak,
+			Photos:    spot.Fields.Photos,
+			Address:   spot.Fields.Address,
+		})
+		
+	}
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"records": summarySpots,
+	})
+}
+
+func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	    var onesurfspot []Onespot
+	for _, spot := range surfSpots.Records {
+		onesurfspot = append(onesurfspot, Onespot{
+			DifficultyLevel: spot.Fields.DifficultyLevel,
+			PeakSurfSeasonBegins: spot.Fields.PeakSurfSeasonBegins,
+			PeakSurfSeasonEnds: spot.Fields.PeakSurfSeasonEnds,
+			DestinationStateCountry: spot.Fields.DestinationStateCountry,
+		})
+		
+	}
+	json.NewEncoder(w).Encode(onesurfspot)
 }
 
 // Main function
@@ -164,10 +201,8 @@ func main() {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/events", createEvent).Methods("POST")
-	router.HandleFunc("/events", getAllEvents).Methods("GET")
-	router.HandleFunc("/events/{id}", getOneEvent).Methods("GET")
 	router.HandleFunc("/api/spots", getAllSurfSpots).Methods("GET")
+	router.HandleFunc("/api/spots/{id}", getOneSurfSpot).Methods("GET")
 
 	fmt.Println("Server started at :8080")
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", router))
@@ -177,12 +212,3 @@ func main() {
 
 
 
-func getOneEvent(w http.ResponseWriter, r *http.Request) {
-	eventID := mux.Vars(r)["id"]
-
-	for _, singleEvent := range events {
-		if singleEvent.ID == eventID {
-			json.NewEncoder(w).Encode(singleEvent)
-		}
-	}
-}
