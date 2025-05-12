@@ -79,58 +79,62 @@ var events = allEvents{
 }
 
 var surfSpots = allSurfSpots{
-	
 	Records: []surfSpot{
 		{
-		ID:          "1",
-		Fields: fields{
-			SurfBreak: []string{"North Point", "South Point"},
-			DifficultyLevel: 3,
-			Destination: "North Shore",
-			Geocode: "21.6, -158.1",
-			Influencers: []string{"John Doe", "Jane Smith"},
-			MagicSeaweedLink: "https://magicseaweed.com/",
-			Photos: []photo{
-				{
-					ID: "1",
-					Url: "https://example.com/photo1.jpg",
-					Filename: "photo1.jpg",
-					Size: 12345,
-					Types: "image/jpeg",
-					Thumbnail: thumbnail{
-						Small: thumbnaildata{
-							Url: "https://example.com/photo1_small.jpg",
-							Width: 100,
-							Height: 100,
-						},
-						Large: thumbnaildata{
-							Url: "https://example.com/photo1_large.jpg",
-							Width: 800,
-							Height: 600,
-						},
-						Full: thumbnaildata{
-							Url: "https://example.com/photo1_full.jpg",
-							Width: 1920,
-							Height: 1080,
+			ID: "rec5aF9TjMjBicXCK",
+			Fields: fields{
+				SurfBreak:           []string{"Reef Break"},
+				DifficultyLevel:     4,
+				Destination:         "Pipeline",
+				Geocode:             ":grand_cercle_bleu: eyJpIjoiUGlwZWxpbmUsIE9haHUsIEhhd2FpaSIsIm8iOnsic3RhdHVzIjoiT0siLCJmb3JtYXR0ZWRBZGRyZXNzIjoiRWh1a2FpIEJlYWNoIFBhcmssIEhhbGVpd2EsIEhJIDk2NzEyLCBVbml...",
+				Influencers:         []string{"recD1zp1pQYc8O7l2", "rec1ptbRPxhS8rRun"},
+				MagicSeaweedLink:    "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/",
+				Photos: []photo{
+					{
+						ID:       "attf6yu03NAtCuv5L",
+						Url:      "https://v5.airtableusercontent.com/v3/u/40/40/1746180000000/q_gkT3iQi_H59TLXaPDg_w/9Cn-4XtmK73Yon9UqpEdJNJkV_hnE4RVFlon_HKR07sFeujcRhwmtfT6fASQYTLdQDycxqMYT5ZH0oU9fTIFSCzroC3w_ugwRasUTsQLa1Jg2Mwj9dY1FIHIeEzH1E8K/86RABu2oA7oED7NRQCPYJzepyhyzxrZ1_a8ur7Q6_2Q",
+						Filename: "thomas-ashlock-64485-unsplash.jpg",
+						Size:     688397,
+						Types:    "image/jpeg",
+						Thumbnail: thumbnail{
+							Small: thumbnaildata{
+								Url:    "https://dl.airtable.com/yfKxR9ZQqiT7drKxpjdF_small_thomas-ashlock-64485-unsplash.jpg",
+								Width:  52,
+								Height: 36,
+							},
+							Large: thumbnaildata{
+								Url:    "https://dl.airtable.com/cFfMuU8NQjaEskeC3B2h_large_thomas-ashlock-64485-unsplash.jpg",
+								Width:  744,
+								Height: 512,
+							},
+							Full: thumbnaildata{
+								Url:    "https://dl.airtable.com/psynuQNmSvOTe3BWa0Fw_full_thomas-ashlock-64485-unsplash.jpg",
+								Width:  2233,
+								Height: 1536,
+							},
 						},
 					},
-				}},
-			PeakSurfSeasonBegins: "2023-06-01",
-			PeakSurfSeasonEnds: "2023-09-01",
-			Adress: "123 Main St",
-			DestinationStateCountry: "Hawaii",
+				},
+				PeakSurfSeasonBegins:     "2018-07-22",
+				PeakSurfSeasonEnds:       "2018-08-31",
+				Adress:                   "Pipeline, Oahu, Hawaii",
+				DestinationStateCountry:  "Oahu, Hawaii",
+			},
+			CreatedTime: "2018-05-31T00:16:16.000Z",
 		},
-		CreatedTime: "2023-01-01T00:00:00Z",
-	}},
+	},
 	Offset: "121",
 }
-
 // Handlers
 func homeLink(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome home!")
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(map[string]string{"message": "Welcome home!"})
 }
 
 func createEvent(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
 	var newEvent event
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -145,10 +149,13 @@ func createEvent(w http.ResponseWriter, r *http.Request) {
 }
 
 func getAllEvents(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(w).Encode(events)
 }
 
 func getAllSurfSpots(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(surfSpots)
 }
 
@@ -163,7 +170,9 @@ func main() {
 	router.HandleFunc("/api/spots", getAllSurfSpots).Methods("GET")
 
 	fmt.Println("Server started at :8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe("0.0.0.0:8080", router))
+
+
 }
 
 
