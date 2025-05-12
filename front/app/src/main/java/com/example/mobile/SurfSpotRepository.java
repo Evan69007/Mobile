@@ -26,7 +26,7 @@ public class SurfSpotRepository {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.airtable.com/v0/appsSzgNEnj6SuGw6/Surf%20Destinations/") // Include trailing slash
+                .baseUrl("http://10.0.2.2:8080/api/spots/") // Include trailing slash
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
