@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-
+	"time"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
@@ -29,6 +29,7 @@ type fields struct {
 	DifficultyLevel         int      `json:"Difficulty Level"`
 	Destination             string   `json:"Destination"`
 	Geocode                 string   `json:"Geocode"`
+	Rating                 	float64  `json:"Rating"`
 	Influencers             []string `json:"Influencers"`
 	MagicSeaweedLink        string   `json:"Magic Seaweed Link"`
 	Photos                  []photo  `json:"Photos"`
@@ -39,7 +40,6 @@ type fields struct {
 }
 
 type SurfSpotSummary struct {
-	ID          string   `json:"ID"`
 	SurfBreak   []string `json:"Surf Break"`
 	Photos      []photo  `json:"Photos"`
 	Destination string   `json:"Destination"`
@@ -84,12 +84,13 @@ var surfSpots = records{
 				DifficultyLevel:  4,
 				Destination:      "Pipeline",
 				Geocode:          "GeocodeDataHere",
+				Rating:          4.5,
 				Influencers:      []string{"recD1zp1pQYc8O7l2", "rec1ptbRPxhS8rRun"},
 				MagicSeaweedLink: "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/",
 				Photos: []photo{
 					{
 						ID:       "attf6yu03NAtCuv5L",
-						Url:      "https://v5.airtableusercontent.com/v3/u/40/40/1746180000000/q_gkT3iQi_H59TLXaPDg_w/9Cn-4XtmK73Yon9UqpEdJNJkV_hnE4RVFlon_HKR07sFeujcRhwmtfT6fASQYTLdQDycxqMYT5ZH0oU9fTIFSCzroC3w_ugwRasUTsQLa1Jg2Mwj9dY1FIHIeEzH1E8K/86RABu2oA7oED7NRQCPYJzepyhyzxrZ1_a8ur7Q6_2Q",
+						Url:      "https://solidsurfhouse.com/wp-content/uploads/2023/09/Riding-the-Waves-The-10-Best-Surf-Spots-in-Mentawai.jpg",
 						Filename: "thomas-ashlock-64485-unsplash.jpg",
 						Size:     688397,
 						Types:    "image/jpeg",
@@ -146,13 +147,12 @@ func getAllSurfSpots(w http.ResponseWriter, r *http.Request) {
 	var records []Record
 	for _, spot := range surfSpots.Records {
 		summary := SurfSpotSummary{
-			ID:          spot.ID,
 			SurfBreak:   spot.Fields.SurfBreak,
 			Photos:      spot.Fields.Photos,
 			Destination: spot.Fields.Destination,
 		}
 		records = append(records, Record{
-			ID:     summary.ID,
+			ID:     spot.ID,
 			Fields: summary,
 		})
 	}
@@ -173,6 +173,7 @@ func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 		PeakSurfSeasonBegins    string `json:"Peak Surf Season Begins"`
 		PeakSurfSeasonEnds      string `json:"Peak Surf Season Ends"`
 		DestinationStateCountry string `json:"Destination State/Country"`
+		Rating                  float64 `json:"Rating"`
 	}
 
 	// Define the full response structure
@@ -193,6 +194,7 @@ func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 							PeakSurfSeasonBegins:    spot.Fields.PeakSurfSeasonBegins,
 							PeakSurfSeasonEnds:      spot.Fields.PeakSurfSeasonEnds,
 							DestinationStateCountry: spot.Fields.DestinationStateCountry,
+							Rating:          		 spot.Fields.Rating,
 						},
 					},
 				},
@@ -231,7 +233,7 @@ func createSurfSpot(w http.ResponseWriter, r *http.Request) {
 	newSpot := surfSpot{
 		ID:          uuid.New().String(),
 		Fields:      newFields,
-		CreatedTime: "2025-05-13T12:00:00Z", // ou time.Now().Format(time.RFC3339)
+		CreatedTime: time.Now().Format(time.RFC3339),
 	}
 	fmt.Println("New fields:", newFields)
 	fmt.Println("New surf spot created:", newSpot)
@@ -239,6 +241,8 @@ func createSurfSpot(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(newSpot)
 }
+
+
 
 // Main
 
@@ -253,5 +257,9 @@ func main() {
 	router.HandleFunc("/api/all/spots", getSurfSpots).Methods("GET")
 
 	fmt.Println("Server started at :8080")
+	fmt.Println(time.Now().Format(time.RFC3339))
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", router))
 }
+
+
+
