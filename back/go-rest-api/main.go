@@ -167,15 +167,37 @@ func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
+	// Define a minimal fields struct for the response
+	type FieldsResponse struct {
+		DifficultyLevel         int    `json:"Difficulty Level"`
+		PeakSurfSeasonBegins    string `json:"Peak Surf Season Begins"`
+		PeakSurfSeasonEnds      string `json:"Peak Surf Season Ends"`
+		DestinationStateCountry string `json:"Destination State/Country"`
+	}
+
+	// Define the full response structure
+	type Record struct {
+		Fields FieldsResponse `json:"fields"`
+	}
+	type Response struct {
+		Records []Record `json:"records"`
+	}
+
 	for _, spot := range surfSpots.Records {
 		if spot.ID == id {
-			result := Onespot{
-				DifficultyLevel:         spot.Fields.DifficultyLevel,
-				PeakSurfSeasonBegins:    spot.Fields.PeakSurfSeasonBegins,
-				PeakSurfSeasonEnds:      spot.Fields.PeakSurfSeasonEnds,
-				DestinationStateCountry: spot.Fields.DestinationStateCountry,
+			response := Response{
+				Records: []Record{
+					{
+						Fields: FieldsResponse{
+							DifficultyLevel:         spot.Fields.DifficultyLevel,
+							PeakSurfSeasonBegins:    spot.Fields.PeakSurfSeasonBegins,
+							PeakSurfSeasonEnds:      spot.Fields.PeakSurfSeasonEnds,
+							DestinationStateCountry: spot.Fields.DestinationStateCountry,
+						},
+					},
+				},
 			}
-			json.NewEncoder(w).Encode(result)
+			json.NewEncoder(w).Encode(response)
 			return
 		}
 	}

@@ -55,6 +55,7 @@ public class ListSpot extends Fragment {
                     List<Record> records = response.body().records;
                     for (Record obj : records) {
                         Fields field = obj.fields;
+                        String id = obj.id;
                         String name = field.Destination;
                         String location = field.DestinationStateCountry;
                         int difficulty = field.DifficultyLevel;
@@ -63,7 +64,7 @@ public class ListSpot extends Fragment {
                         String image = (field.Photos != null && !field.Photos.isEmpty())
                                 ? field.Photos.get(0).url
                                 : null;
-                        spots.add(new Spot(name, location, image, difficulty, peak_end, peak_start));
+                        spots.add(new Spot(name, location, image, difficulty, peak_end, peak_start, id));
                         adapter.notifyItemChanged(0); // ✅ Notify adapter here
                     }
                 } else {

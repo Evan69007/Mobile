@@ -44,11 +44,8 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
         holder.spotImage.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putString("name", spot.getName());
-            bundle.putString("location", spot.getLocation());
             bundle.putString("image", spot.getImage());
-            bundle.putString("Peak Surf Season Ends", spot.getPeakEnd());
-            bundle.putString("Peak Surf Season Begins", spot.getPeakStart());
-            bundle.putInt("Difficulty Level", spot.getDifficulty());
+            bundle.putString("id", spot.getId());
 
             NavController navController = Navigation.findNavController(v);
             navController.navigate(R.id.detail_spot, bundle);

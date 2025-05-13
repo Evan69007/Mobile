@@ -1,6 +1,9 @@
 package com.example.mobile;
 
 public class Spot {
+
+    protected String id;
+
     protected String name;
     protected String location;
     protected String image;
@@ -11,7 +14,7 @@ public class Spot {
 
     protected String peak_start;
 
-    public Spot(String name, String location, String image, int difficulty, String peak_end, String peak_start)
+    public Spot(String name, String location, String image, int difficulty, String peak_end, String peak_start, String id)
     {
         this.name = name;
         this.image = image;
@@ -19,6 +22,12 @@ public class Spot {
         this.difficulty = difficulty;
         this.peak_end = peak_end;
         this.peak_start = peak_start;
+        this.id = id;
+    }
+
+    public String getId()
+    {
+        return this.id;
     }
 
     public String getName()

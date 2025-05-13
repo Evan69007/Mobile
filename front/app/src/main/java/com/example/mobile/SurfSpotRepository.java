@@ -26,7 +26,7 @@ public class SurfSpotRepository {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/") // Include trailing slash
+                .baseUrl("http://172.19.75.76:8080/api/") // Include trailing slash
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -36,6 +36,11 @@ public class SurfSpotRepository {
 
     public void fetchSurfSpots(Callback<ApiResponse> callback) {
         Call<ApiResponse> call = apiService.getSurfSpots();
+        call.enqueue(callback);
+    }
+
+    public void fetchSpotDetail(Callback<ApiResponse> callback, String id) {
+        Call<ApiResponse> call = apiService.getSurfDetail(id);
         call.enqueue(callback);
     }
 
