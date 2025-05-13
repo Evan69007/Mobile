@@ -25,30 +25,30 @@ type surfSpot struct {
 }
 
 type fields struct {
-	SurfBreak              []string `json:"Surf Break"`
-	DifficultyLevel        int      `json:"Difficulty Level"`
-	Destination            string   `json:"Destination"`
-	Geocode                string   `json:"Geocode"`
-	Influencers            []string `json:"Influencers"`
-	MagicSeaweedLink       string   `json:"Magic Seaweed Link"`
-	Photos                 []photo  `json:"Photos"`
-	PeakSurfSeasonBegins   string   `json:"Peak Surf Season Begins"`
-	PeakSurfSeasonEnds     string   `json:"Peak Surf Season Ends"`
-	Address                string   `json:"Address"`
-	DestinationStateCountry string  `json:"Destination State/Country"`
+	SurfBreak               []string `json:"Surf Break"`
+	DifficultyLevel         int      `json:"Difficulty Level"`
+	Destination             string   `json:"Destination"`
+	Geocode                 string   `json:"Geocode"`
+	Influencers             []string `json:"Influencers"`
+	MagicSeaweedLink        string   `json:"Magic Seaweed Link"`
+	Photos                  []photo  `json:"Photos"`
+	PeakSurfSeasonBegins    string   `json:"Peak Surf Season Begins"`
+	PeakSurfSeasonEnds      string   `json:"Peak Surf Season Ends"`
+	Address                 string   `json:"Address"`
+	DestinationStateCountry string   `json:"Destination State/Country"`
 }
 
 type SurfSpotSummary struct {
-	ID        string `json:"ID"`
-	SurfBreak []string `json:"Surf Break"`
-	Photos    []photo  `json:"Photos"`
-	Address   string   `json:"Address"`
+	ID          string   `json:"ID"`
+	SurfBreak   []string `json:"Surf Break"`
+	Photos      []photo  `json:"Photos"`
+	Destination string   `json:"Destination"`
 }
 
 type Onespot struct {
-	DifficultyLevel        int    `json:"Difficulty Level"`
-	PeakSurfSeasonBegins   string `json:"Peak Surf Season Begins"`
-	PeakSurfSeasonEnds     string `json:"Peak Surf Season Ends"`
+	DifficultyLevel         int    `json:"Difficulty Level"`
+	PeakSurfSeasonBegins    string `json:"Peak Surf Season Begins"`
+	PeakSurfSeasonEnds      string `json:"Peak Surf Season Ends"`
 	DestinationStateCountry string `json:"Destination State/Country"`
 }
 
@@ -80,14 +80,14 @@ var surfSpots = records{
 		{
 			ID: "rec5aF9TjMjBicXCK",
 			Fields: fields{
-				SurfBreak:              []string{"Reef Break"},
-				DifficultyLevel:        4,
-				Destination:            "Pipeline",
-				Geocode:                "GeocodeDataHere",
-				Influencers:            []string{"recD1zp1pQYc8O7l2", "rec1ptbRPxhS8rRun"},
-				MagicSeaweedLink:       "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/",
-				Photos:                 []photo{
-						{
+				SurfBreak:        []string{"Reef Break"},
+				DifficultyLevel:  4,
+				Destination:      "Pipeline",
+				Geocode:          "GeocodeDataHere",
+				Influencers:      []string{"recD1zp1pQYc8O7l2", "rec1ptbRPxhS8rRun"},
+				MagicSeaweedLink: "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/",
+				Photos: []photo{
+					{
 						ID:       "attf6yu03NAtCuv5L",
 						Url:      "https://v5.airtableusercontent.com/v3/u/40/40/1746180000000/q_gkT3iQi_H59TLXaPDg_w/9Cn-4XtmK73Yon9UqpEdJNJkV_hnE4RVFlon_HKR07sFeujcRhwmtfT6fASQYTLdQDycxqMYT5ZH0oU9fTIFSCzroC3w_ugwRasUTsQLa1Jg2Mwj9dY1FIHIeEzH1E8K/86RABu2oA7oED7NRQCPYJzepyhyzxrZ1_a8ur7Q6_2Q",
 						Filename: "thomas-ashlock-64485-unsplash.jpg",
@@ -110,10 +110,10 @@ var surfSpots = records{
 								Height: 1536,
 							},
 						},
-					},},
-				PeakSurfSeasonBegins:   "2018-07-22",
-				PeakSurfSeasonEnds:     "2018-08-31",
-				Address:                "Pipeline, Oahu, Hawaii",
+					}},
+				PeakSurfSeasonBegins:    "2018-07-22",
+				PeakSurfSeasonEnds:      "2018-08-31",
+				Address:                 "Pipeline, Oahu, Hawaii",
 				DestinationStateCountry: "Oahu, Hawaii",
 			},
 			CreatedTime: "2018-05-31T00:16:16.000Z",
@@ -136,17 +136,29 @@ func getSurfSpots(w http.ResponseWriter, r *http.Request) {
 
 func getAllSurfSpots(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var summarySpots []SurfSpotSummary
+
+	// Define a struct for the wrapped record
+	type Record struct {
+		ID     string          `json:"id"`
+		Fields SurfSpotSummary `json:"fields"`
+	}
+
+	var records []Record
 	for _, spot := range surfSpots.Records {
-		summarySpots = append(summarySpots, SurfSpotSummary{
-			ID:        spot.ID,
-			SurfBreak: spot.Fields.SurfBreak,
-			Photos:    spot.Fields.Photos,
-			Address:   spot.Fields.Address,
+		summary := SurfSpotSummary{
+			ID:          spot.ID,
+			SurfBreak:   spot.Fields.SurfBreak,
+			Photos:      spot.Fields.Photos,
+			Destination: spot.Fields.Destination,
+		}
+		records = append(records, Record{
+			ID:     summary.ID,
+			Fields: summary,
 		})
 	}
+
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"records": summarySpots,
+		"records": records,
 	})
 }
 
@@ -185,15 +197,15 @@ func createSurfSpot(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var wrapper struct {
-    Fields fields `json:"fields"`
-}
+		Fields fields `json:"fields"`
+	}
 
-if err := json.Unmarshal(reqBody, &wrapper); err != nil {
-    http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-    return
-}
+	if err := json.Unmarshal(reqBody, &wrapper); err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
 
-newFields = wrapper.Fields
+	newFields = wrapper.Fields
 	newSpot := surfSpot{
 		ID:          uuid.New().String(),
 		Fields:      newFields,
@@ -205,8 +217,6 @@ newFields = wrapper.Fields
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(newSpot)
 }
-
-
 
 // Main
 

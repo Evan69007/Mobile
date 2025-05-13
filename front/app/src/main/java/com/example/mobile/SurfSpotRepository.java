@@ -18,7 +18,7 @@ public class SurfSpotRepository {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request request = chain.request().newBuilder()
-                            .addHeader("Authorization", "Bearer patLinxDfQmD3pA8h.031e67116f7078e1000628fe693c735cba92524421ae7f12749e28f97e751ce2")
+//                            .addHeader("Authorization", "Bearer patLinxDfQmD3pA8h.031e67116f7078e1000628fe693c735cba92524421ae7f12749e28f97e751ce2")
                             .addHeader("Content-Type", "application/json")
                             .build();
                     return chain.proceed(request);
@@ -26,7 +26,7 @@ public class SurfSpotRepository {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/spots/") // Include trailing slash
+                .baseUrl("http://10.0.2.2:8080/api/") // Include trailing slash
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

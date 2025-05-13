@@ -55,8 +55,8 @@ public class ListSpot extends Fragment {
                     List<Record> records = response.body().records;
                     for (Record obj : records) {
                         Fields field = obj.fields;
-                        String location = field.DestinationStateCountry;
                         String name = field.Destination;
+                        String location = field.DestinationStateCountry;
                         int difficulty = field.DifficultyLevel;
                         String peak_end = field.PeakSurfSeasonEnds;
                         String peak_start = field.PeakSurfSeasonBegins;
