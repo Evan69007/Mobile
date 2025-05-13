@@ -37,6 +37,7 @@ type fields struct {
 	PeakSurfSeasonEnds      string   `json:"Peak Surf Season Ends"`
 	Address                 string   `json:"Address"`
 	DestinationStateCountry string   `json:"Destination State/Country"`
+
 }
 
 type SurfSpotSummary struct {
@@ -82,10 +83,10 @@ var surfSpots = records{
 			ID: "rec5aF9TjMjBicXCK",
 			Fields: fields{
 				SurfBreak:        []string{"Reef Break"},
-				DifficultyLevel:  4,
+				DifficultyLevel:  3,
 				Destination:      "Pipeline",
 				Geocode:          "GeocodeDataHere",
-				Rating:          4.5,
+				Rating:          5,
 				Influencers:      []string{"recD1zp1pQYc8O7l2", "rec1ptbRPxhS8rRun"},
 				MagicSeaweedLink: "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/",
 				Photos: []photo{
@@ -207,6 +208,55 @@ func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 
 	http.Error(w, "Surf spot not found", http.StatusNotFound)
 }
+func addARating(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Adding a rating...")
+	w.Header().Set("Content-Type", "application/json")
+	type RatingPayload struct {
+		Id     string  `json:"id"`
+		Rating float64 `json:"rating"`
+	}
+	var payload RatingPayload
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+	var id = payload.Id
+	for i, spot := range surfSpots.Records {
+		if spot.ID == id {
+			 var rating = surfSpots.Records[i].Fields.Rating + payload.Rating
+			surfSpots.Records[i].Fields.Rating = rating/2
+			json.NewEncoder(w).Encode(surfSpots.Records[i])
+			return
+		}
+	}
+	http.Error(w, "Surf spot not found", http.StatusNotFound)
+}
+
+func updatesurfrating(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	// Struct to decode the incoming JSON
+	type RatingPayload struct {
+		Rating float64 `json:"rating"`
+	}
+	var payload RatingPayload
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+
+	for i, spot := range surfSpots.Records {
+		if spot.ID == id {
+			surfSpots.Records[i].Fields.Rating = payload.Rating
+			json.NewEncoder(w).Encode(surfSpots.Records[i])
+			return
+		}
+	}
+	http.Error(w, "Surf spot not found", http.StatusNotFound)
+	}
+
 
 func createSurfSpot(w http.ResponseWriter, r *http.Request) {
 
@@ -255,7 +305,10 @@ func main() {
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/api/spots", getAllSurfSpots).Methods("GET")
 	router.HandleFunc("/api/spots/{id}", getOneSurfSpot).Methods("GET")
-	router.HandleFunc("/api/spots", createSurfSpot).Methods("POST")
+	router.HandleFunc("/api/spots/{id}", updatesurfrating).Methods("PUT")
+
+	router.HandleFunc("/api/addspots", createSurfSpot).Methods("POST")
+	router.HandleFunc("/api/spots", addARating).Methods("POST")
 
 	router.HandleFunc("/api/all/spots", getSurfSpots).Methods("GET")
 
