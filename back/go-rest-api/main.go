@@ -43,6 +43,7 @@ type SurfSpotSummary struct {
 	SurfBreak   []string `json:"Surf Break"`
 	Photos      []photo  `json:"Photos"`
 	Destination string   `json:"Destination"`
+	Rating      float64  `json:"Rating"`
 }
 
 type Onespot struct {
@@ -150,6 +151,7 @@ func getAllSurfSpots(w http.ResponseWriter, r *http.Request) {
 			SurfBreak:   spot.Fields.SurfBreak,
 			Photos:      spot.Fields.Photos,
 			Destination: spot.Fields.Destination,
+			Rating:    spot.Fields.Rating,
 		}
 		records = append(records, Record{
 			ID:     spot.ID,
@@ -173,7 +175,6 @@ func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 		PeakSurfSeasonBegins    string `json:"Peak Surf Season Begins"`
 		PeakSurfSeasonEnds      string `json:"Peak Surf Season Ends"`
 		DestinationStateCountry string `json:"Destination State/Country"`
-		Rating                  float64 `json:"Rating"`
 	}
 
 	// Define the full response structure
@@ -194,7 +195,7 @@ func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 							PeakSurfSeasonBegins:    spot.Fields.PeakSurfSeasonBegins,
 							PeakSurfSeasonEnds:      spot.Fields.PeakSurfSeasonEnds,
 							DestinationStateCountry: spot.Fields.DestinationStateCountry,
-							Rating:          		 spot.Fields.Rating,
+							
 						},
 					},
 				},
@@ -241,6 +242,8 @@ func createSurfSpot(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(newSpot)
 }
+
+
 
 
 
