@@ -8,6 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -19,5 +20,8 @@ public interface ApiService {
 
     @POST("spots") // Replace with your Airtable API endpoint path
     Call<ApiResponse> AddSurfSpots(@Body RequestBody body);
+
+    @PUT("spots/{id}")
+    Call<ApiResponse> EditRating(@Body RequestBody body,@Path("id") String spotId);
 }
 

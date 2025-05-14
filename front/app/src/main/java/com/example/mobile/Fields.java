@@ -8,6 +8,8 @@ public class Fields {
     @SerializedName("Surf Break")
     public List<String> SurfBreak;
 
+    @SerializedName("Rating")
+    public float rating;
     @SerializedName("Difficulty Level")
     public int DifficultyLevel;
     public String Destination;

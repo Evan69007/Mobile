@@ -36,6 +36,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
     public void onBindViewHolder(@NonNull SpotViewHolder holder, int position) {
         Spot spot = spotList.get(position);
         holder.spotName.setText(spot.getName());
+        holder.rating.setText(String.valueOf(spot.getRating()));
 //        holder.spotLocation.setText(spot.getLocation());
         Picasso.get()
                 .load(spot.getImage())
@@ -43,6 +44,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
 
         holder.spotImage.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
+            bundle.putFloat("rating",spot.getRating());
             bundle.putString("name", spot.getName());
             bundle.putString("image", spot.getImage());
             bundle.putString("id", spot.getId());
@@ -59,13 +61,14 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
 
     public static class SpotViewHolder extends RecyclerView.ViewHolder {
         ImageView spotImage;
-        TextView spotName;
+        TextView spotName, rating;
 //        TextView spotLocation;
 
         public SpotViewHolder(@NonNull View itemView) {
             super(itemView);
             spotImage = itemView.findViewById(R.id.imageView);
             spotName = itemView.findViewById(R.id.spotName);
+            rating = itemView.findViewById(R.id.rating);
 //            spotLocation = itemView.findViewById(R.id.Location);
         }
     }

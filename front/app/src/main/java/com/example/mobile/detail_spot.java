@@ -4,9 +4,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -14,11 +18,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.mobile.databinding.DetailSpotBinding;
+import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,10 +46,6 @@ public class detail_spot extends Fragment {
 
         Bundle args = getArguments();
         String id = args.getString("id");
-        final String[] peak_start = {null};
-        final String[] peak_end = {null};
-        final String[] state_country = {null};
-        final Integer[] difficulty = {null};
 
         SurfSpotRepository repository = new SurfSpotRepository();
         repository.fetchSpotDetail(new Callback<ApiResponse>() {
@@ -49,15 +55,16 @@ public class detail_spot extends Fragment {
                     List<Record> records = response.body().records;
                     for (Record obj : records) {
                         Fields field = obj.fields;
-                        difficulty[0] = field.DifficultyLevel;
-                        peak_start[0] = field.PeakSurfSeasonBegins;
-                        peak_end[0] = field.PeakSurfSeasonEnds;
-                        state_country[0] = field.DestinationStateCountry;
+                        int difficulty = field.DifficultyLevel;
+                        String peak_start = field.PeakSurfSeasonBegins;
+                        String peak_end = field.PeakSurfSeasonEnds;
+                        String state_country = field.DestinationStateCountry;
                         binding.spotName.setText(args.getString("name"));
-                        binding.level.setText(difficulty[0].toString());
-                        binding.Location.setText(state_country[0]);
-                        String peakStartFormatted = DateFormatter.reformatDate(peak_start[0]);
-                        String peakEndFormatted = DateFormatter.reformatDate(peak_end[0]);
+                        binding.level.setText(String.valueOf(difficulty));
+                        binding.Location.setText(state_country);
+                        binding.rating.setText(String.valueOf(args.getFloat("rating")));
+                        String peakStartFormatted = DateFormatter.reformatDate(peak_start);
+                        String peakEndFormatted = DateFormatter.reformatDate(peak_end);
                         String fullPeak = peakStartFormatted + " to " + peakEndFormatted;
                         binding.peak.setText(fullPeak);
                         Picasso.get()
@@ -75,6 +82,68 @@ public class detail_spot extends Fragment {
             }
         }, id);
 
+        binding.edit.setOnClickListener(v -> {
+            binding.rating.setEnabled(true);
+            binding.rating.setFocusable(true);
+            binding.rating.setFocusableInTouchMode(true);
+        });
+
+        binding.rating.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                // Check if the action is "Enter" or "Done"
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                    // Do your action here
+                    String inputText = binding.rating.getText().toString();
+                    Log.d("InputText", "User entered: " + inputText);
+
+                    JSONObject data = new JSONObject();
+
+                    try {
+                        float ratingValue = Float.parseFloat(inputText);
+
+                        if (ratingValue < 0.0f || ratingValue > 5.0f) {
+                            Toast.makeText(v.getContext(), "La note doit être entre 0 et 5", Toast.LENGTH_SHORT).show();
+                        } else {
+                            data.put("rating", ratingValue);
+                            // Ici tu peux continuer (par exemple : envoyer data à un serveur)
+                            Log.d("JSON", "Data prête à l'envoi : " + data.toString());
+                        }
+
+                    } catch (NumberFormatException e) {
+                        Log.e("ParseError", "Valeur invalide : " + inputText, e);
+                        Toast.makeText(v.getContext(), "Veuillez entrer un nombre valide", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        Log.e("JSONError", "Erreur lors de la création du JSON", e);
+                    }
+
+
+                    RequestBody requestBody = RequestBody.create(
+                            MediaType.parse("application/json"),
+                            data.toString()
+                    );
+
+                    SurfSpotRepository repository = new SurfSpotRepository();
+                    repository.EditRating(new Callback<ApiResponse>() {
+                        @Override
+                        public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                return;
+                            } else {
+                                Log.e("API", "Response failed: " + response.code());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ApiResponse> call, Throwable t) {
+                            Log.e("API", "Error: " + t.getMessage());
+                        }
+                    }, requestBody, id);
+                }
+                return false;
+            }
+        });
         return binding.getRoot();
     }
 

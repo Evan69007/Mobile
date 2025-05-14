@@ -14,7 +14,9 @@ public class Spot {
 
     protected String peak_start;
 
-    public Spot(String name, String location, String image, int difficulty, String peak_end, String peak_start, String id)
+    protected float rating;
+
+    public Spot(String name, String location, String image, int difficulty, String peak_end, String peak_start, String id, float rating)
     {
         this.name = name;
         this.image = image;
@@ -23,6 +25,7 @@ public class Spot {
         this.peak_end = peak_end;
         this.peak_start = peak_start;
         this.id = id;
+        this.rating = rating;
     }
 
     public String getId()
@@ -47,4 +50,6 @@ public class Spot {
     public String getPeakEnd() { return this.peak_end; }
 
     public String getPeakStart() { return this.peak_start; }
+
+    public float getRating() {return this.rating;}
 }
