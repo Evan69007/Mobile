@@ -49,6 +49,11 @@ public class SurfSpotRepository {
         call.enqueue(callback);
     }
 
+    public void AddRating(Callback<ApiResponse> callback, RequestBody body){
+        Call<ApiResponse> call = apiService.AddRating(body);
+        call.enqueue(callback);
+    }
+
     public void EditRating(Callback<ApiResponse> callback, RequestBody body,String id){
         Call<ApiResponse> call = apiService.EditRating(body, id);
         call.enqueue(callback);
