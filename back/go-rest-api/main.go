@@ -3,12 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	// "io/ioutil"
 	"log"
 	"net/http"
 	"time"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	"strings"
+	"errors"
+	"gorm.io/gorm"
 )
 
 // Structures
@@ -75,95 +78,51 @@ type thumbnaildata struct {
 	Height int    `json:"height"`
 }
 
-// Data (initial)
-
-var surfSpots = records{
-	Records: []surfSpot{
-		{
-			ID: "rec5aF9TjMjBicXCK",
-			Fields: fields{
-				SurfBreak:        []string{"Reef Break"},
-				DifficultyLevel:  3,
-				Destination:      "Pipeline",
-				Geocode:          "GeocodeDataHere",
-				Rating:          5,
-				Influencers:      []string{"recD1zp1pQYc8O7l2", "rec1ptbRPxhS8rRun"},
-				MagicSeaweedLink: "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/",
-				Photos: []photo{
-					{
-						ID:       "attf6yu03NAtCuv5L",
-						Url:      "https://solidsurfhouse.com/wp-content/uploads/2023/09/Riding-the-Waves-The-10-Best-Surf-Spots-in-Mentawai.jpg",
-						Filename: "thomas-ashlock-64485-unsplash.jpg",
-						Size:     688397,
-						Types:    "image/jpeg",
-						Thumbnail: thumbnail{
-							Small: thumbnaildata{
-								Url:    "https://dl.airtable.com/yfKxR9ZQqiT7drKxpjdF_small_thomas-ashlock-64485-unsplash.jpg",
-								Width:  52,
-								Height: 36,
-							},
-							Large: thumbnaildata{
-								Url:    "https://dl.airtable.com/cFfMuU8NQjaEskeC3B2h_large_thomas-ashlock-64485-unsplash.jpg",
-								Width:  744,
-								Height: 512,
-							},
-							Full: thumbnaildata{
-								Url:    "https://dl.airtable.com/psynuQNmSvOTe3BWa0Fw_full_thomas-ashlock-64485-unsplash.jpg",
-								Width:  2233,
-								Height: 1536,
-							},
-						},
-					}},
-				PeakSurfSeasonBegins:    "2018-07-22",
-				PeakSurfSeasonEnds:      "2018-08-31",
-				Address:                 "Pipeline, Oahu, Hawaii",
-				DestinationStateCountry: "Oahu, Hawaii",
-			},
-			CreatedTime: "2018-05-31T00:16:16.000Z",
-		},
-	},
-	Offset: "121",
+func parseDate(dateStr string) time.Time {
+	t, _ := time.Parse("2006-01-02", dateStr)
+	return t
 }
+
 
 // Handlers
 
-func homeLink(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"message": "Welcome home!"})
-}
-
-func getSurfSpots(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(surfSpots)
-}
 
 func getAllSurfSpots(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	// Define a struct for the wrapped record
+	var spots []SurfSpot
+	if err := db.Find(&spots).Error; err != nil {
+		http.Error(w, "Error retrieving spots", http.StatusInternalServerError)
+		return
+	}
+		// Define a struct for the wrapped record
 	type Record struct {
 		ID     string          `json:"id"`
 		Fields SurfSpotSummary `json:"fields"`
 	}
 
 	var records []Record
-	for _, spot := range surfSpots.Records {
+	
+	for _, spot := range spots {
+		var Photo []photo
+		Photo = append(Photo, photo{
+			Url: spot.PhotoURL,
+		})
 		summary := SurfSpotSummary{
-			SurfBreak:   spot.Fields.SurfBreak,
-			Photos:      spot.Fields.Photos,
-			Destination: spot.Fields.Destination,
-			Rating:    spot.Fields.Rating,
+			SurfBreak:   strings.Split(spot.SurfBreak, ", "),
+			Photos:      Photo,
+			Destination: spot.Destination,
+			Rating:    spot.Rating,
 		}
 		records = append(records, Record{
 			ID:     spot.ID,
 			Fields: summary,
 		})
 	}
-
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"records": records,
 	})
 }
+
 
 func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -186,28 +145,35 @@ func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 		Records []Record `json:"records"`
 	}
 
-	for _, spot := range surfSpots.Records {
-		if spot.ID == id {
-			response := Response{
-				Records: []Record{
-					{
-						Fields: FieldsResponse{
-							DifficultyLevel:         spot.Fields.DifficultyLevel,
-							PeakSurfSeasonBegins:    spot.Fields.PeakSurfSeasonBegins,
-							PeakSurfSeasonEnds:      spot.Fields.PeakSurfSeasonEnds,
-							DestinationStateCountry: spot.Fields.DestinationStateCountry,
-							
-						},
-					},
-				},
-			}
-			json.NewEncoder(w).Encode(response)
+	var spot SurfSpot
+	
+	if err := db.First(&spot, "id = ?", id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			http.Error(w, "Spot not found", http.StatusNotFound)
 			return
 		}
-	}
+		http.Error(w, "DB error", http.StatusInternalServerError)
+		return
+	}else
+	{
+		layout := "2006-01-02"
 
-	http.Error(w, "Surf spot not found", http.StatusNotFound)
+		response := Response{
+			Records: []Record{
+				{
+					Fields: FieldsResponse{
+						DifficultyLevel:         spot.DifficultyLevel,
+						PeakSurfSeasonBegins:    spot.PeakSurfSeasonBegins.Format(layout),
+						PeakSurfSeasonEnds:      spot.PeakSurfSeasonEnds.Format(layout),
+						DestinationStateCountry: spot.DestinationStateCountry,
+					},
+				},
+			},
+		}
+		json.NewEncoder(w).Encode(response)
+	}
 }
+
 func addARating(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Adding a rating...")
 	w.Header().Set("Content-Type", "application/json")
@@ -220,19 +186,27 @@ func addARating(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
+
+	var spot SurfSpot
 	var id = payload.Id
-	for i, spot := range surfSpots.Records {
-		if spot.ID == id {
-			 var rating = surfSpots.Records[i].Fields.Rating + payload.Rating
-			surfSpots.Records[i].Fields.Rating = rating/2
-			json.NewEncoder(w).Encode(surfSpots.Records[i])
+	if err := db.First(&spot, "id = ?", id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			http.Error(w, "Spot not found", http.StatusNotFound)
 			return
 		}
+		http.Error(w, "DB error", http.StatusInternalServerError)
+		return
+	}else{
+		var rating = (spot.Rating +  payload.Rating)/2
+		db.Model(&spot).Update("rating", rating)
+		json.NewEncoder(w).Encode(spot)
+		return
 	}
-	http.Error(w, "Surf spot not found", http.StatusNotFound)
+	
 }
 
 func updatesurfrating(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Edtiting a rating...")
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -247,62 +221,71 @@ func updatesurfrating(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, spot := range surfSpots.Records {
-		if spot.ID == id {
-			surfSpots.Records[i].Fields.Rating = payload.Rating
-			json.NewEncoder(w).Encode(surfSpots.Records[i])
+	var spot SurfSpot
+
+	
+	if err := db.First(&spot, "id = ?", id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			http.Error(w, "Spot not found", http.StatusNotFound)
 			return
 		}
-	}
-	http.Error(w, "Surf spot not found", http.StatusNotFound)
-	}
-
-
-func createSurfSpot(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Println("Creating a new surf spot...")
-	w.Header().Set("Content-Type", "application/json")
-	defer r.Body.Close()
-
-	var newFields fields
-	reqBody, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		http.Error(w, "DB error", http.StatusInternalServerError)
 		return
-	}
-
-	var wrapper struct {
-		Fields fields `json:"fields"`
-	}
-
-	if err := json.Unmarshal(reqBody, &wrapper); err != nil {
-		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+	}else{
+		db.Model(&spot).Update("rating", payload.Rating)
+		json.NewEncoder(w).Encode(spot)
+		fmt.Println("Rating edited")
 		return
-	}
-
-	newFields = wrapper.Fields
-	newSpot := surfSpot{
-		ID:          uuid.New().String(),
-		Fields:      newFields,
-		CreatedTime: time.Now().Format(time.RFC3339),
-	}
-	fmt.Println("New fields:", newFields)
-	fmt.Println("New surf spot created:", newSpot)
-	surfSpots.Records = append(surfSpots.Records, newSpot)
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(newSpot)
+	}	
 }
+		
+func createSurfSpot(w http.ResponseWriter, r *http.Request) {
+	var input SurfSpotInput
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		http.Error(w, "Invalid input: "+err.Error(), http.StatusBadRequest)
+		return
+	}
 
+	layout := "2006-01-02"
+	start, err1 := time.Parse(layout, input.PeakSurfSeasonBegins)
+	end, err2 := time.Parse(layout, input.PeakSurfSeasonEnds)
 
+	if err1 != nil || err2 != nil {
+		http.Error(w, "Invalid date format", http.StatusBadRequest)
+		return
+	}
 
+	spot := SurfSpot{
+		ID:                     uuid.New().String(),
+		Destination:            input.Destination,
+		DestinationStateCountry: input.DestinationStateCountry,
+		Address:                input.Address,
+		SurfBreak:              input.SurfBreak,
+		DifficultyLevel:        input.DifficultyLevel,
+		Rating:                 input.Rating,
+		Geocode:                input.Geocode,
+		MagicSeaweedLink:       input.MagicSeaweedLink,
+		Influencers:            input.Influencers,
+		PhotoURL:               input.PhotoURL,
+		PeakSurfSeasonBegins:   start,
+		PeakSurfSeasonEnds:     end,
+		CreatedTime:            time.Now(),
+	}
 
+	if err := db.Create(&spot).Error; err != nil {
+		http.Error(w, "Failed to create", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(spot)
+}
 
 // Main
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/api/spots", getAllSurfSpots).Methods("GET")
 	router.HandleFunc("/api/spots/{id}", getOneSurfSpot).Methods("GET")
 	router.HandleFunc("/api/spots/{id}", updatesurfrating).Methods("PUT")
@@ -310,8 +293,7 @@ func main() {
 	router.HandleFunc("/api/addspots", createSurfSpot).Methods("POST")
 	router.HandleFunc("/api/spots", addARating).Methods("POST")
 
-	router.HandleFunc("/api/all/spots", getSurfSpots).Methods("GET")
-
+	database()
 	fmt.Println("Server started at :8080")
 	fmt.Println(time.Now().Format(time.RFC3339))
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", router))

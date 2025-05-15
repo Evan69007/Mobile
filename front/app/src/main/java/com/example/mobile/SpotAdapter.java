@@ -63,8 +63,8 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
                         JSONObject data = new JSONObject();
 
                         try {
-                            data.put("rating", Float.parseFloat(rating));
                             data.put("id", spot.getId());
+                            data.put("rating", Float.parseFloat(rating));
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -76,7 +76,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
 
                         // Appel au repository
                         SurfSpotRepository repository = new SurfSpotRepository();
-                        repository.AddSurfSpot(new Callback<ApiResponse>() {
+                        repository.AddRating(new Callback<ApiResponse>() {
                             @Override
                             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                                 if (response.isSuccessful() && response.body() != null) {

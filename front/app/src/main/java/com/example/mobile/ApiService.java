@@ -18,7 +18,7 @@ public interface ApiService {
     @GET("spots/{id}") // Replace with your Airtable API endpoint path
     Call<ApiResponse> getSurfDetail(@Path("id") String spotId);
 
-    @POST("spots") // Replace with your Airtable API endpoint path
+    @POST("addspots") // Replace with your Airtable API endpoint path
     Call<ApiResponse> AddSurfSpots(@Body RequestBody body);
 
     @POST("spots") // Replace with your Airtable API endpoint path

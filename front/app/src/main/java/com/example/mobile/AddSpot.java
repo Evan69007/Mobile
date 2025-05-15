@@ -44,30 +44,21 @@ public class AddSpot extends Fragment {
         binding.Submit.setOnClickListener(v -> {
             try {
                 JSONObject data = new JSONObject();
-                JSONObject fields = new JSONObject();
 
-                fields.put("Destination", binding.Destination.getText().toString());
+                data.put("Destination", binding.Destination.getText().toString());
 
-                fields.put("Destination State/Country", binding.DestinationStateCountry.getText().toString());
+                data.put("Destination State/Country", binding.DestinationStateCountry.getText().toString());
 
-                fields.put("Peak Surf Season Begins", binding.peakBegin.getText().toString());
+                data.put("Peak Surf Season Begins", binding.peakBegin.getText().toString());
 
-                fields.put("Peak Surf Season Ends", binding.peakEnd.getText().toString());
+                data.put("Peak Surf Season Ends", binding.peakEnd.getText().toString());
 
                 int difficulty = Integer.parseInt(binding.difficulty.getText().toString());
-                fields.put("Difficulty Level", difficulty);
+                data.put("Difficulty Level", difficulty);
 
-                String[] surfBreak = binding.SurfBreak.getText().toString().split(", ");
+                data.put("Surf Break",  binding.SurfBreak.getText().toString());
 
-                fields.put("Surf Break", new JSONArray(surfBreak));
-
-                JSONArray photos = new JSONArray();
-                JSONObject photo = new JSONObject();
-
-                photo.put("url", binding.url.getText().toString());
-                photos.put(photo);
-                fields.put("Photos", photos);
-                data.put("fields", fields);
+                data.put("url", binding.url.getText().toString());
                 RequestBody requestBody = RequestBody.create(
                         MediaType.parse("application/json"),
                         data.toString()
