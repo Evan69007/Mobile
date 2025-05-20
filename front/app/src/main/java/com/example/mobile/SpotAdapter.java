@@ -1,5 +1,8 @@
 package com.example.mobile;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,12 +21,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mobile.Spot;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -49,6 +51,12 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
     public void onBindViewHolder(@NonNull SpotViewHolder holder, int position) {
         Spot spot = spotList.get(position);
         holder.spotName.setText(spot.getName());
+        if (Objects.equals(spot.getName(), "No spots matches the filters"))
+        {
+            holder.add.setVisibility(INVISIBLE);
+        }else {
+            holder.add.setVisibility(VISIBLE);
+        }
         holder.rating.setText(String.valueOf(spot.getRating()));
         holder.add.setOnClickListener(v-> {
             EditText input = new EditText(v.getContext());
@@ -60,11 +68,16 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
                     .setPositiveButton("Submit", (dialog, which) -> {
                         String rating = input.getText().toString();
 
+                        Float ratingValue = Float.parseFloat(rating);
+                        if (ratingValue < 0.0f || ratingValue > 5.0f)
+                        {
+                            return;
+                        }
                         JSONObject data = new JSONObject();
 
                         try {
                             data.put("id", spot.getId());
-                            data.put("rating", Float.parseFloat(rating));
+                            data.put("rating", ratingValue);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }

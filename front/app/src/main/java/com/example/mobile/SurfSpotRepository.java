@@ -2,6 +2,8 @@ package com.example.mobile;
 
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -34,8 +36,19 @@ public class SurfSpotRepository {
         apiService = retrofit.create(ApiService.class);
     }
 
-    public void fetchSurfSpots(Callback<ApiResponse> callback) {
-        Call<ApiResponse> call = apiService.getSurfSpots();
+    public void fetchSurfSpots(Callback<ApiResponse> callback, int offset) {
+        Call<ApiResponse> call = apiService.getSurfSpots(offset);
+        call.enqueue(callback);
+    }
+
+    public void fetchDestination(Callback<ApiResponse> callback) {
+        Call<ApiResponse> call = apiService.getDestination();
+        call.enqueue(callback);
+    }
+
+
+    public void fetchfilteredSpots(Callback<ApiResponse> callback, Map<String, String> options ) {
+        Call<ApiResponse> call = apiService.fetchSurfSpots(options);
         call.enqueue(callback);
     }
 

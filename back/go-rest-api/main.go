@@ -12,6 +12,7 @@ import (
 	"strings"
 	"errors"
 	"gorm.io/gorm"
+	"strconv"
 )
 
 // Structures
@@ -86,11 +87,73 @@ func parseDate(dateStr string) time.Time {
 
 // Handlers
 
+func getFilteredSpots(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var spots []SurfSpot
+	query := db.Model(&SurfSpot{})
+
+	destination := r.URL.Query().Get("destination")
+	if destination != "" {
+		query = query.Where("destination = ?", destination)
+	}
+
+	difficultyStr := r.URL.Query().Get("difficulty")
+	if difficultyStr != "" {
+		difficulty, _ := strconv.Atoi(difficultyStr)
+		query = query.Where("difficulty_level = ?", difficulty)
+	}
+
+	ratingStr := r.URL.Query().Get("rating")
+	if ratingStr != "" {
+		rating, _ := strconv.ParseFloat(ratingStr, 64)
+		query = query.Where("rating >= ?", rating)
+	}
+
+	// Exécuter la requête
+	if err := query.Find(&spots).Error; err != nil {
+		http.Error(w, "Erreur DB", http.StatusInternalServerError)
+		return
+	}
+	type Record struct {
+		ID     string          `json:"id"`
+		Fields SurfSpotSummary `json:"fields"`
+	}
+
+	var records []Record
+	
+	for _, spot := range spots {
+		var Photo []photo
+		Photo = append(Photo, photo{
+			Url: spot.PhotoURL,
+		})
+		summary := SurfSpotSummary{
+			SurfBreak:   strings.Split(spot.SurfBreak, ", "),
+			Photos:      Photo,
+			Destination: spot.Destination,
+			Rating:    spot.Rating,
+		}
+		records = append(records, Record{
+			ID:     spot.ID,
+			Fields: summary,
+		})
+	}
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"records": records,
+	})
+}
+
+
 
 func getAllSurfSpots(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	offset, err := strconv.Atoi(r.URL.Query().Get("offset"))
+	if err != nil {
+        fmt.Println("Erreur de conversion :", err)
+    } else {
+        fmt.Println("Valeur entière :", offset)
+    }
 	var spots []SurfSpot
-	if err := db.Find(&spots).Error; err != nil {
+	if err := db.Limit(3).Offset(offset).Find(&spots).Error; err != nil {
 		http.Error(w, "Error retrieving spots", http.StatusInternalServerError)
 		return
 	}
@@ -173,6 +236,39 @@ func getOneSurfSpot(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 	}
 }
+
+func getDestination(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	type Field struct {
+		Destination string `json:"Destination"`
+	}
+	
+	type Record struct {
+		Fields Field `json:"fields"`
+	}
+	
+	var spots []SurfSpot
+	if err := db.Find(&spots).Error; err != nil {
+		http.Error(w, "Error retrieving spots", http.StatusInternalServerError)
+		return
+	}
+
+	var records []Record
+	for _, spot := range spots {
+		records = append(records, Record{
+			Fields: Field{
+				Destination: spot.Destination,
+			},
+		})
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"records": records,
+	})
+}
+
+
 
 func addARating(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Adding a rating...")
@@ -288,6 +384,8 @@ func main() {
 
 	router.HandleFunc("/api/spots", getAllSurfSpots).Methods("GET")
 	router.HandleFunc("/api/spots/{id}", getOneSurfSpot).Methods("GET")
+	router.HandleFunc("/api/filteredspots", getFilteredSpots).Methods("GET")
+	router.HandleFunc("/api/destination", getDestination).Methods("GET")
 	router.HandleFunc("/api/spots/{id}", updatesurfrating).Methods("PUT")
 
 	router.HandleFunc("/api/addspots", createSurfSpot).Methods("POST")

@@ -15,7 +15,7 @@ import androidx.navigation.Navigation;
 import com.example.mobile.databinding.MainPageBinding;
 import com.squareup.picasso.Picasso;
 
-public class main_page extends Fragment {
+public class MainPage extends Fragment {
 
     private MainPageBinding binding;
 

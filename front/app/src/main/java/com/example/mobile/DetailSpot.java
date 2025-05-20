@@ -1,7 +1,5 @@
 package com.example.mobile;
 
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,18 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.mobile.databinding.DetailSpotBinding;
-import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -33,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class detail_spot extends Fragment {
+public class DetailSpot extends Fragment {
 
     private DetailSpotBinding binding;
 
