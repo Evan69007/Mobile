@@ -1,10 +1,13 @@
 package com.example.mobile;
 
+import android.app.DatePickerDialog;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -34,6 +37,8 @@ import retrofit2.Response;
 public class AddSpot extends Fragment {
 
     private AddSpotBinding binding;
+    private Calendar calendar;
+
 
     @Override
     public View onCreateView(
@@ -41,6 +46,47 @@ public class AddSpot extends Fragment {
             Bundle savedInstanceState
     ) {
         binding = AddSpotBinding.inflate(inflater, container, false);
+
+        calendar = Calendar.getInstance();
+
+        binding.peakBegin.setFocusable(false);
+        binding.peakBegin.setClickable(true);
+
+        binding.peakBegin.setOnClickListener(v -> {
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    requireContext(),
+                    (view, selectedYear, selectedMonth, selectedDay) -> {
+                        String date = selectedYear + "-" + ((selectedMonth + 1 > 9) ? "" : "0") + (selectedMonth + 1) + "-" + ((selectedDay + 1 > 9) ? "" : "0") + selectedDay;
+                        binding.peakBegin.setText(date);
+                    },
+                    year, month, day
+            );
+            datePickerDialog.show();
+        });
+
+        binding.peakEnd.setFocusable(false);
+        binding.peakEnd.setClickable(true);
+
+        binding.peakEnd.setOnClickListener(v -> {
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    requireContext(),
+                    (view, selectedYear, selectedMonth, selectedDay) -> {
+                        String date = selectedYear + "-" + ((selectedMonth + 1 > 9) ? "" : "0") + (selectedMonth + 1) + "-" + ((selectedDay + 1 > 9) ? "" : "0") + selectedDay;
+                        binding.peakEnd.setText(date);
+                    },
+                    year, month, day
+            );
+            datePickerDialog.show();
+        });
+
         binding.Submit.setOnClickListener(v -> {
             try {
                 JSONObject data = new JSONObject();
