@@ -1,5 +1,6 @@
 package com.example.mobile;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -43,6 +44,7 @@ public class DetailSpot extends Fragment {
 
         SurfSpotRepository repository = new SurfSpotRepository();
         repository.fetchSpotDetail(new Callback<ApiResponse>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -56,7 +58,7 @@ public class DetailSpot extends Fragment {
                         binding.spotName.setText(args.getString("name"));
                         binding.level.setText(String.valueOf(difficulty));
                         binding.Location.setText(state_country);
-                        binding.rating.setText(String.valueOf(args.getFloat("rating")));
+                        binding.rating.setText(String.valueOf(args.getFloat("rating")) + "⭐");
                         String peakStartFormatted = DateFormatter.reformatDate(peak_start);
                         String peakEndFormatted = DateFormatter.reformatDate(peak_end);
                         String fullPeak = peakStartFormatted + " to " + peakEndFormatted;
