@@ -3,6 +3,7 @@ package com.example.mobile;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
         return new SpotViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SpotViewHolder holder, int position) {
         Spot spot = spotList.get(position);
@@ -57,7 +59,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotViewHolder
         }else {
             holder.add.setVisibility(VISIBLE);
         }
-        holder.rating.setText(String.valueOf(spot.getRating()));
+        holder.rating.setText(String.valueOf(spot.getRating()) + "⭐");
         holder.add.setOnClickListener(v-> {
             EditText input = new EditText(v.getContext());
 

@@ -205,6 +205,7 @@ public class ListSpot extends Fragment {
                                 : null;
                         spots.add(new Spot(name, location, image, difficulty, peak_end, peak_start, id, rating));
                     }
+                    offset.addAndGet(3);
                     spotAdapter.notifyDataSetChanged();
                 } else {
                     Log.e("API", "Response failed: " + response.code());
@@ -216,9 +217,9 @@ public class ListSpot extends Fragment {
                 Log.e("API", "Error: " + t.getMessage());
             }
         }, offset.get());
-        offset.addAndGet(3);
         binding.more.setOnClickListener(v -> {
             repository.fetchSurfSpots(new Callback<ApiResponse>() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
@@ -238,8 +239,8 @@ public class ListSpot extends Fragment {
                                         ? field.Photos.get(0).url
                                         : null;
                                 spots.add(new Spot(name, location, image, difficulty, peak_end, peak_start, id, rating));
-                                offset.addAndGet(3);
                             }
+                            offset.addAndGet(3);
                             spotAdapter.notifyDataSetChanged();
                             if (records.size() < 3)
                             {
